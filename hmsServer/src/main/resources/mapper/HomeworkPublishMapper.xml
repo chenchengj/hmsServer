@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.HomeworkPublishMapper" >
+  <resultMap id="BaseResultMap" type="dao.HomeworkPublish" >
+    <id column="h_id" property="hId" jdbcType="BIGINT" />
+    <result column="h_title" property="hTitle" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="create_date" property="createDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
+    <result column="h_pulish_url" property="hPulishUrl" jdbcType="VARCHAR" />
+    <result column="class_id" property="classId" jdbcType="BIGINT" />
+    <result column="course_id" property="courseId" jdbcType="VARCHAR" />
+    <result column="teacher_id" property="teacherId" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="DtoResultMap" type="dto.NeedPublishedDTO" >
+  	<result column="h_id" property="h_id" jdbcType="BIGINT" />
+    <result column="h_title" property="h_title" jdbcType="VARCHAR" />
+    <result column="courseName" property="courseName" jdbcType="VARCHAR" />
+    <result column="teacherName" property="teacherName" jdbcType="VARCHAR" />
+    <result column="endDate" property="endDate" jdbcType="DATE" />
+    <result column="publishedUrl" property="publishedUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    h_id, h_title, status, create_date, end_date, h_pulish_url, class_id, course_id, 
+    teacher_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="dao.HomeworkPublishExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from homework_publish
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from homework_publish
+    where h_id = #{hId,jdbcType=BIGINT}
+  </select>
+  <select id="selectPublishByClassId" resultMap="DtoResultMap" >
+    select 
+    	a.h_title as h_title,
+    	CONCAT(b.course_id,' ',b.course_name) as courseName,
+    	c.teacher_name as teacherName,
+    	a.end_date as endDate,
+    	a.h_pulish_url as publishedUrl,
+    	a.h_id as h_id
+    from homework_publish a,
+    course b,
+    user_teacher c
+    where 
+    a.course_id = b.course_id and
+    a.teacher_id = c.teacher_id and
+    a.class_id = #{classId,jdbcType=BIGINT}
+    and a.status = #{status,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from homework_publish
+    where h_id = #{hId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="dao.HomeworkPublishExample" >
+    delete from homework_publish
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="dao.HomeworkPublish" >
+    insert into homework_publish (h_id, h_title, status, 
+      create_date, end_date, h_pulish_url, 
+      class_id, course_id, teacher_id
+      )
+    values (#{hId,jdbcType=BIGINT}, #{hTitle,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{createDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{hPulishUrl,jdbcType=VARCHAR}, 
+      #{classId,jdbcType=BIGINT}, #{courseId,jdbcType=VARCHAR}, #{teacherId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="dao.HomeworkPublish" >
+    insert into homework_publish
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hId != null" >
+        h_id,
+      </if>
+      <if test="hTitle != null" >
+        h_title,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="hPulishUrl != null" >
+        h_pulish_url,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="teacherId != null" >
+        teacher_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hId != null" >
+        #{hId,jdbcType=BIGINT},
+      </if>
+      <if test="hTitle != null" >
+        #{hTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=DATE},
+      </if>
+      <if test="hPulishUrl != null" >
+        #{hPulishUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="courseId != null" >
+        #{courseId,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherId != null" >
+        #{teacherId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="dao.HomeworkPublishExample" resultType="java.lang.Integer" >
+    select count(*) from homework_publish
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update homework_publish
+    <set >
+      <if test="record.hId != null" >
+        h_id = #{record.hId,jdbcType=BIGINT},
+      </if>
+      <if test="record.hTitle != null" >
+        h_title = #{record.hTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=DATE},
+      </if>
+      <if test="record.endDate != null" >
+        end_date = #{record.endDate,jdbcType=DATE},
+      </if>
+      <if test="record.hPulishUrl != null" >
+        h_pulish_url = #{record.hPulishUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classId != null" >
+        class_id = #{record.classId,jdbcType=BIGINT},
+      </if>
+      <if test="record.courseId != null" >
+        course_id = #{record.courseId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherId != null" >
+        teacher_id = #{record.teacherId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update homework_publish
+    set h_id = #{record.hId,jdbcType=BIGINT},
+      h_title = #{record.hTitle,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=CHAR},
+      create_date = #{record.createDate,jdbcType=DATE},
+      end_date = #{record.endDate,jdbcType=DATE},
+      h_pulish_url = #{record.hPulishUrl,jdbcType=VARCHAR},
+      class_id = #{record.classId,jdbcType=BIGINT},
+      course_id = #{record.courseId,jdbcType=VARCHAR},
+      teacher_id = #{record.teacherId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="dao.HomeworkPublish" >
+    update homework_publish
+    <set >
+      <if test="hTitle != null" >
+        h_title = #{hTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=DATE},
+      </if>
+      <if test="hPulishUrl != null" >
+        h_pulish_url = #{hPulishUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherId != null" >
+        teacher_id = #{teacherId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where h_id = #{hId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dao.HomeworkPublish" >
+    update homework_publish
+    set h_title = #{hTitle,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      create_date = #{createDate,jdbcType=DATE},
+      end_date = #{endDate,jdbcType=DATE},
+      h_pulish_url = #{hPulishUrl,jdbcType=VARCHAR},
+      class_id = #{classId,jdbcType=BIGINT},
+      course_id = #{courseId,jdbcType=VARCHAR},
+      teacher_id = #{teacherId,jdbcType=BIGINT}
+    where h_id = #{hId,jdbcType=BIGINT}
+  </update>
+</mapper>

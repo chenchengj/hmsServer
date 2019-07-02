@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.RoleMapper" >
+  <resultMap id="BaseResultMap" type="dao.Role" >
+    <id column="roleId" property="roleid" jdbcType="CHAR" />
+    <result column="roleDesc" property="roledesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    roleId, roleDesc
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="dao.RoleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from role
+    where roleId = #{roleid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from role
+    where roleId = #{roleid,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="dao.RoleExample" >
+    delete from role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="dao.Role" >
+    insert into role (roleId, roleDesc)
+    values (#{roleid,jdbcType=CHAR}, #{roledesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="dao.Role" >
+    insert into role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleid != null" >
+        roleId,
+      </if>
+      <if test="roledesc != null" >
+        roleDesc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleid != null" >
+        #{roleid,jdbcType=CHAR},
+      </if>
+      <if test="roledesc != null" >
+        #{roledesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="dao.RoleExample" resultType="java.lang.Integer" >
+    select count(*) from role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update role
+    <set >
+      <if test="record.roleid != null" >
+        roleId = #{record.roleid,jdbcType=CHAR},
+      </if>
+      <if test="record.roledesc != null" >
+        roleDesc = #{record.roledesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update role
+    set roleId = #{record.roleid,jdbcType=CHAR},
+      roleDesc = #{record.roledesc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="dao.Role" >
+    update role
+    <set >
+      <if test="roledesc != null" >
+        roleDesc = #{roledesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where roleId = #{roleid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dao.Role" >
+    update role
+    set roleDesc = #{roledesc,jdbcType=VARCHAR}
+    where roleId = #{roleid,jdbcType=CHAR}
+  </update>
+</mapper>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.UserTeacherMapper" >
+  <resultMap id="BaseResultMap" type="dao.UserTeacher" >
+    <id column="teacher_id" property="teacherId" jdbcType="BIGINT" />
+    <result column="teacher_name" property="teacherName" jdbcType="VARCHAR" />
+    <result column="dept_id" property="deptId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="id_num" property="idNum" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    teacher_id, teacher_name, dept_id, user_id, id_num
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="dao.UserTeacherExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_teacher
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_teacher
+    where teacher_id = #{teacherId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user_teacher
+    where teacher_id = #{teacherId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="dao.UserTeacherExample" >
+    delete from user_teacher
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="dao.UserTeacher" >
+    insert into user_teacher (teacher_id, teacher_name, dept_id, 
+      user_id, id_num)
+    values (#{teacherId,jdbcType=BIGINT}, #{teacherName,jdbcType=VARCHAR}, #{deptId,jdbcType=BIGINT}, 
+      #{userId,jdbcType=BIGINT}, #{idNum,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="dao.UserTeacher" >
+    insert into user_teacher
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="teacherId != null" >
+        teacher_id,
+      </if>
+      <if test="teacherName != null" >
+        teacher_name,
+      </if>
+      <if test="deptId != null" >
+        dept_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="idNum != null" >
+        id_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="teacherId != null" >
+        #{teacherId,jdbcType=BIGINT},
+      </if>
+      <if test="teacherName != null" >
+        #{teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="idNum != null" >
+        #{idNum,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="dao.UserTeacherExample" resultType="java.lang.Integer" >
+    select count(*) from user_teacher
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user_teacher
+    <set >
+      <if test="record.teacherId != null" >
+        teacher_id = #{record.teacherId,jdbcType=BIGINT},
+      </if>
+      <if test="record.teacherName != null" >
+        teacher_name = #{record.teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptId != null" >
+        dept_id = #{record.deptId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.idNum != null" >
+        id_num = #{record.idNum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user_teacher
+    set teacher_id = #{record.teacherId,jdbcType=BIGINT},
+      teacher_name = #{record.teacherName,jdbcType=VARCHAR},
+      dept_id = #{record.deptId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      id_num = #{record.idNum,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="dao.UserTeacher" >
+    update user_teacher
+    <set >
+      <if test="teacherName != null" >
+        teacher_name = #{teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null" >
+        dept_id = #{deptId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="idNum != null" >
+        id_num = #{idNum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where teacher_id = #{teacherId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dao.UserTeacher" >
+    update user_teacher
+    set teacher_name = #{teacherName,jdbcType=VARCHAR},
+      dept_id = #{deptId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      id_num = #{idNum,jdbcType=VARCHAR}
+    where teacher_id = #{teacherId,jdbcType=BIGINT}
+  </update>
+</mapper>

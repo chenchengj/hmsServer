@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.HomeworkSubmitMapper" >
+  <resultMap id="BaseResultMap" type="dao.HomeworkSubmit" >
+    <id column="h_submit_id" property="hSubmitId" jdbcType="BIGINT" />
+    <result column="student_id" property="studentId" jdbcType="BIGINT" />
+    <result column="h_submit_url" property="hSubmitUrl" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="DATE" />
+    <result column="h_id" property="hId" jdbcType="BIGINT" />
+    <result column="attach_id" property="attachId" jdbcType="BIGINT" />
+    <result column="rate_level" property="rateLevel" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    h_submit_id, student_id, h_submit_url, remark, create_date, h_id, attach_id, rate_level
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="dao.HomeworkSubmitExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from homework_submit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from homework_submit
+    where h_submit_id = #{hSubmitId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from homework_submit
+    where h_submit_id = #{hSubmitId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="dao.HomeworkSubmitExample" >
+    delete from homework_submit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="dao.HomeworkSubmit" >
+    insert into homework_submit (h_submit_id, student_id, h_submit_url, 
+      remark, create_date, h_id, 
+      attach_id, rate_level)
+    values (#{hSubmitId,jdbcType=BIGINT}, #{studentId,jdbcType=BIGINT}, #{hSubmitUrl,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE}, #{hId,jdbcType=BIGINT}, 
+      #{attachId,jdbcType=BIGINT}, #{rateLevel,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="dao.HomeworkSubmit" >
+    insert into homework_submit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hSubmitId != null" >
+        h_submit_id,
+      </if>
+      <if test="studentId != null" >
+        student_id,
+      </if>
+      <if test="hSubmitUrl != null" >
+        h_submit_url,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="hId != null" >
+        h_id,
+      </if>
+      <if test="attachId != null" >
+        attach_id,
+      </if>
+      <if test="rateLevel != null" >
+        rate_level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hSubmitId != null" >
+        #{hSubmitId,jdbcType=BIGINT},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=BIGINT},
+      </if>
+      <if test="hSubmitUrl != null" >
+        #{hSubmitUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="hId != null" >
+        #{hId,jdbcType=BIGINT},
+      </if>
+      <if test="attachId != null" >
+        #{attachId,jdbcType=BIGINT},
+      </if>
+      <if test="rateLevel != null" >
+        #{rateLevel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="dao.HomeworkSubmitExample" resultType="java.lang.Integer" >
+    select count(*) from homework_submit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update homework_submit
+    <set >
+      <if test="record.hSubmitId != null" >
+        h_submit_id = #{record.hSubmitId,jdbcType=BIGINT},
+      </if>
+      <if test="record.studentId != null" >
+        student_id = #{record.studentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.hSubmitUrl != null" >
+        h_submit_url = #{record.hSubmitUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=DATE},
+      </if>
+      <if test="record.hId != null" >
+        h_id = #{record.hId,jdbcType=BIGINT},
+      </if>
+      <if test="record.attachId != null" >
+        attach_id = #{record.attachId,jdbcType=BIGINT},
+      </if>
+      <if test="record.rateLevel != null" >
+        rate_level = #{record.rateLevel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update homework_submit
+    set h_submit_id = #{record.hSubmitId,jdbcType=BIGINT},
+      student_id = #{record.studentId,jdbcType=BIGINT},
+      h_submit_url = #{record.hSubmitUrl,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=DATE},
+      h_id = #{record.hId,jdbcType=BIGINT},
+      attach_id = #{record.attachId,jdbcType=BIGINT},
+      rate_level = #{record.rateLevel,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="dao.HomeworkSubmit" >
+    update homework_submit
+    <set >
+      <if test="studentId != null" >
+        student_id = #{studentId,jdbcType=BIGINT},
+      </if>
+      <if test="hSubmitUrl != null" >
+        h_submit_url = #{hSubmitUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="hId != null" >
+        h_id = #{hId,jdbcType=BIGINT},
+      </if>
+      <if test="attachId != null" >
+        attach_id = #{attachId,jdbcType=BIGINT},
+      </if>
+      <if test="rateLevel != null" >
+        rate_level = #{rateLevel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where h_submit_id = #{hSubmitId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="dao.HomeworkSubmit" >
+    update homework_submit
+    set student_id = #{studentId,jdbcType=BIGINT},
+      h_submit_url = #{hSubmitUrl,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=DATE},
+      h_id = #{hId,jdbcType=BIGINT},
+      attach_id = #{attachId,jdbcType=BIGINT},
+      rate_level = #{rateLevel,jdbcType=VARCHAR}
+    where h_submit_id = #{hSubmitId,jdbcType=BIGINT}
+  </update>
+</mapper>
