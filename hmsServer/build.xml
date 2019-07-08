@@ -130,12 +130,7 @@
   	<target name="war" depends="clean,build-project" description="将工程打成war包">
     	<echo message="begin war..." />
   		<mkdir dir="WebContent/WEB-INF/classes"/>
-  		<copy includeemptydirs="false" todir="WebContent/WEB-INF/classes">
-            <fileset dir="build/classes">
-            <include name="**/*.class"/>
-            </fileset>
-    	</copy>
-    	<war destfile="hmsServer.war" basedir="WebContent" needxmlfile="false">
+    	<war destfile="WebContent/WEB-INF/classes/hmsServer.war" basedir="WebContent" needxmlfile="false">
     	</war>
     	<echo message="end war..." />
     </target>
